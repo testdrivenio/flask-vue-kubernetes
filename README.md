@@ -14,29 +14,34 @@ $ docker-compose up -d --build
 
 ### Minikube
 
-Install and run [Minikube](https://kubernetes.io/docs/setup/minikube/).
+Install and run [Minikube](https://kubernetes.io/docs/setup/minikube/):
 
-#### [Hyperkit](https://github.com/moby/hyperkit) Example
+1. Install a  [Hypervisor](https://kubernetes.io/docs/tasks/tools/install-minikube/#install-a-hypervisor) (like [VirtualBox](https://www.virtualbox.org/wiki/Downloads) or [HyperKit](https://github.com/moby/hyperkit)) to manage virtual machines
+1. Install and Set Up [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to deploy and manage apps on Kubernetes
+1. Install [Minikube](https://github.com/kubernetes/minikube/releases)
 
-Install:
-
-```sh
-$ curl -Lo docker-machine-driver-hyperkit \
-https://storage.googleapis.com/minikube/releases/latest/docker-machine-driver-hyperkit \
-&& chmod +x docker-machine-driver-hyperkit \
-&& sudo cp docker-machine-driver-hyperkit /usr/local/bin/ \
-&& rm docker-machine-driver-hyperkit \
-&& sudo chown root:wheel /usr/local/bin/docker-machine-driver-hyperkit \
-&& sudo chmod u+s /usr/local/bin/docker-machine-driver-hyperkit
-```
-
-Run:
+Start the cluster:
 
 ```sh
-$ minikube start --vm-driver=hyperkit
+$ minikube start --vm-driver=virtualbox
 $ eval $(minikube docker-env)
 $ minikube dashboard
 ```
+
+### Volume
+
+Create the volume:
+
+```sh
+$ kubectl apply -f ./kubernetes/persistent-volume.yml
+```
+
+Create the volume claim:
+
+```sh
+$ kubectl apply -f ./kubernetes/persistent-volume-claim.yml
+```
+
 
 ### Postgres
 
