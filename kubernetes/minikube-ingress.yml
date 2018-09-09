@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: minikube-ingress
+  annotations:
+spec:
+  rules:
+  - host: hello.world
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: vue
+          servicePort: 8080
+      - path: /books
+        backend:
+          serviceName: flask
+          servicePort: 5000

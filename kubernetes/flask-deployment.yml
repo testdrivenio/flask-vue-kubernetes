@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: flask
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      containers:
+      - name: flask
+        image: mjhea0/flask-kubernetes:latest
+        env:
+        - name: FLASK_ENV
+          value: "development"
+        - name: APP_SETTINGS
+          value: "project.config.DevelopmentConfig"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: password
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+      restartPolicy: Always

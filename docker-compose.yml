@@ -11,7 +11,8 @@ services:
     environment:
       - FLASK_ENV=development
       - APP_SETTINGS=project.config.DevelopmentConfig
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/books
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     depends_on:
       - postgres
 

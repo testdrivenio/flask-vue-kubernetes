@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:10.4-alpine
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-credentials
+                key: user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-credentials
+                key: password
+        volumeMounts:
+          - name: postgres-volume-mount
+            mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-volume-mount
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+      restartPolicy: Always
