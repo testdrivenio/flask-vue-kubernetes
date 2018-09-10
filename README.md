@@ -24,7 +24,6 @@ Start the cluster:
 
 ```sh
 $ minikube start --vm-driver=virtualbox
-$ eval $(minikube docker-env)
 $ minikube dashboard
 ```
 
