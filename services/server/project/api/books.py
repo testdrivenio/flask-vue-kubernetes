@@ -1,3 +1,5 @@
+import os
+
 from flask import Blueprint, jsonify, request
 
 from project.api.models import Book
@@ -9,7 +11,10 @@ books_blueprint = Blueprint('books', __name__)
 
 @books_blueprint.route('/books', methods=['GET', 'POST'])
 def all_books():
-    response_object = {'status': 'success'}
+    response_object = {
+        'status': 'success',
+        'container_id': os.uname()[1]
+    }
     if request.method == 'POST':
         post_data = request.get_json()
         title = post_data.get('title')
@@ -27,13 +32,17 @@ def all_books():
 def ping():
     return jsonify({
         'status': 'success',
-        'message': 'pong!'
+        'message': 'pong!',
+        'container_id': os.uname()[1]
     })
 
 
 @books_blueprint.route('/books/<book_id>', methods=['PUT', 'DELETE'])
 def single_book(book_id):
-    response_object = {'status': 'success'}
+    response_object = {
+      'status': 'success',
+      'container_id': os.uname()[1]
+    }
     book = Book.query.filter_by(id=book_id).first()
     if request.method == 'PUT':
         post_data = request.get_json()

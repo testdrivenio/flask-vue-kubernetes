@@ -10,4 +10,4 @@ spec:
     port: 5000
     targetPort: 5000
   selector:
-    service: flask
+    app: flask

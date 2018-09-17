@@ -7,7 +7,7 @@ spec:
   template:
     metadata:
       labels:
-        run: vue
+        app: vue
     spec:
       containers:
       - name: vue
