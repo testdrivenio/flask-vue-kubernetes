@@ -41,6 +41,13 @@ Create the volume claim:
 $ kubectl apply -f ./kubernetes/persistent-volume-claim.yml
 ```
 
+### Secrets
+
+Create the secret object:
+
+```sh
+$ kubectl apply -f ./kubernetes/secret.yml
+```
 
 ### Postgres
 
@@ -60,8 +67,7 @@ Create the database:
 
 ```sh
 $ kubectl get pods
-$ kubectl exec postgres-<POD_IDENTIFIER> \
-    --stdin --tty -- createdb -U postgres books
+$ kubectl exec postgres-<POD_IDENTIFIER> --stdin --tty -- createdb -U postgres books
 ```
 
 ### Flask
@@ -81,47 +87,18 @@ Create the deployment:
 $ kubectl create -f ./kubernetes/flask-deployment.yml
 ```
 
-Create (and expose) the service:
+Create the service:
 
 ```sh
-$ kubectl expose deployment flask --type=NodePort --port 5000
+$ kubectl create -f ./kubernetes/flask-service.yml
 ```
 
-Try it out:
+Apply the migrations and seed the database:
 
 ```sh
-$ open $(minikube service flask --url)/books/ping
-$ open $(minikube service flask --url)/books
-```
-
-### Vue
-
-Build and push the image to Docker Hub:
-
-```sh
-$ docker build -t mjhea0/vue-kubernetes ./services/client \
-    -f ./services/client/Dockerfile-minikube
-$ docker push mjhea0/vue-kubernetes
-```
-
-> Again, replace `mjhea0` with your Docker Hub namespace in the above commands as well as in *kubernetes/vue-deployment.yml*
-
-Create the deployment:
-
-```sh
-$ kubectl create -f ./kubernetes/vue-deployment.yml
-```
-
-Create (and expose) the service:
-
-```sh
-$ kubectl expose deployment vue --type=NodePort --port 8080
-```
-
-Try it out:
-
-```sh
-$ open $(minikube service vue --url)
+$ kubectl get pods
+$ kubectl exec flask-<POD_IDENTIFIER> --stdin --tty -- python manage.py recreate_db
+$ kubectl exec flask-<POD_IDENTIFIER> --stdin --tty -- python manage.py seed_db
 ```
 
 ### Ingress
@@ -141,5 +118,32 @@ Add entry to */etc/hosts* file:
 
 Try it out:
 
-1. http://hello.world
-1. http://hello.world/books
+1. [http://hello.world/books/ping](http://hello.world/books/ping)
+1. [http://hello.world/books](http://hello.world/books)
+
+
+### Vue
+
+Build and push the image to Docker Hub:
+
+```sh
+$ docker build -t mjhea0/vue-kubernetes ./services/client \
+    -f ./services/client/Dockerfile-minikube
+$ docker push mjhea0/vue-kubernetes
+```
+
+> Again, replace `mjhea0` with your Docker Hub namespace in the above commands as well as in *kubernetes/vue-deployment.yml*
+
+Create the deployment:
+
+```sh
+$ kubectl create -f ./kubernetes/vue-deployment.yml
+```
+
+Create the service:
+
+```sh
+$ kubectl create -f ./kubernetes/vue-service.yml
+```
+
+Try it out at [http://hello.world/](http://hello.world/).
