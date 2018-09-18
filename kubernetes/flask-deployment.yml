@@ -2,6 +2,8 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: flask
+  labels:
+    name: flask
 spec:
   replicas: 1
   template:
@@ -27,7 +29,4 @@ spec:
             secretKeyRef:
               name: postgres-credentials
               key: password
-        ports:
-        - containerPort: 5000
-          protocol: TCP
       restartPolicy: Always

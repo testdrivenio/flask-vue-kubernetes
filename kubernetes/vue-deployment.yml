@@ -2,6 +2,8 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: vue
+  labels:
+    name: vue
 spec:
   replicas: 1
   template:
@@ -12,7 +14,4 @@ spec:
       containers:
       - name: vue
         image: mjhea0/vue-kubernetes:latest
-        ports:
-        - containerPort: 8080
-          protocol: TCP
       restartPolicy: Always
