@@ -12,7 +12,7 @@ echo "Creating the database credentials..."
 kubectl apply -f ./kubernetes/secret.yml
 
 
-echo "Creating the Postgres deployment and service..."
+echo "Creating the postgres deployment and service..."
 
 kubectl create -f ./kubernetes/postgres-deployment.yml
 kubectl create -f ./kubernetes/postgres-service.yml

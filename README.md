@@ -1,18 +1,35 @@
-# Flask Bookshelf
+# Running Flask on Kubernetes
 
-Flask + Vue + Postgres + Docker + Kubernetes
+## Want to learn how to build this?
 
-## Docker
+Check out the [post](https://testdriven.io/running-flask-on-kubernetes).
+
+## Want to use this project?
+
+### Docker
+
+Build the images and spin up the containers:
 
 ```sh
 $ docker-compose up -d --build
 ```
 
-[http://localhost:8080/](http://localhost:8080/)
+Run the migrations and seed the database:
 
-## Kubernetes
+```sh
+$ docker-compose exec server python manage.py recreate_db
+$ docker-compose exec server python manage.py seed_db
+```
 
-### Minikube
+Test it out at:
+
+1. [http://localhost:8080/](http://localhost:8080/)
+1. [http://localhost:5001/books/ping](http://localhost:5001/books/ping)
+1. [http://localhost:5001/books](http://localhost:5001/books)
+
+### Kubernetes
+
+#### Minikube
 
 Install and run [Minikube](https://kubernetes.io/docs/setup/minikube/):
 
@@ -27,7 +44,7 @@ $ minikube start --vm-driver=virtualbox
 $ minikube dashboard
 ```
 
-### Volume
+#### Volume
 
 Create the volume:
 
@@ -41,7 +58,7 @@ Create the volume claim:
 $ kubectl apply -f ./kubernetes/persistent-volume-claim.yml
 ```
 
-### Secrets
+#### Secrets
 
 Create the secret object:
 
@@ -49,7 +66,7 @@ Create the secret object:
 $ kubectl apply -f ./kubernetes/secret.yml
 ```
 
-### Postgres
+#### Postgres
 
 Create deployment:
 
@@ -70,7 +87,7 @@ $ kubectl get pods
 $ kubectl exec postgres-<POD_IDENTIFIER> --stdin --tty -- createdb -U postgres books
 ```
 
-### Flask
+#### Flask
 
 Build and push the image to Docker Hub:
 
@@ -101,7 +118,7 @@ $ kubectl exec flask-<POD_IDENTIFIER> --stdin --tty -- python manage.py recreate
 $ kubectl exec flask-<POD_IDENTIFIER> --stdin --tty -- python manage.py seed_db
 ```
 
-### Ingress
+#### Ingress
 
 Enable and apply:
 
@@ -122,7 +139,7 @@ Try it out:
 1. [http://hello.world/books](http://hello.world/books)
 
 
-### Vue
+#### Vue
 
 Build and push the image to Docker Hub:
 
