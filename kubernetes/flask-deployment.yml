@@ -1,32 +1,49 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask
   labels:
     name: flask
+  name: flask
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: flask
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
         app: flask
     spec:
       containers:
-      - name: flask
-        image: mjhea0/flask-kubernetes:latest
-        env:
+      - env:
         - name: FLASK_ENV
-          value: "development"
+          value: development
         - name: APP_SETTINGS
-          value: "project.config.DevelopmentConfig"
+          value: project.config.DevelopmentConfig
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: postgres-credentials
               key: user
+              name: postgres-credentials
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgres-credentials
               key: password
+              name: postgres-credentials
+        image: fingertip/flask-kubernetes:latest
+        imagePullPolicy: Always
+        name: flask
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
       restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}

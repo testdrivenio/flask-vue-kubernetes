@@ -164,3 +164,32 @@ $ kubectl create -f ./kubernetes/vue-service.yml
 ```
 
 Try it out at [http://hello.world/](http://hello.world/).
+
+## Upgrading Kubernetes versions
+
+The original project was built using Kubernetes 1.13. 
+Some of the API's have been deprecated and do not work with version 1.16. 
+
+`kubectl` can be used to convert. E.g.:
+
+```sh
+kubectl convert -f ./kubernetes/flask-deployment.yml.yml --output-version apps/v1
+```
+
+For example, the `flask-deployment.yml` went from:
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+...
+```
+
+to:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+...
+```
+
+A number of new default values are added in the conversion too.
