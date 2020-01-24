@@ -8,15 +8,9 @@ metadata:
 spec:
   progressDeadlineSeconds: 2147483647
   replicas: 1
-  revisionHistoryLimit: 2147483647
   selector:
     matchLabels:
       service: postgres
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
   template:
     metadata:
       creationTimestamp: null
@@ -24,23 +18,19 @@ spec:
         service: postgres
     spec:
       containers:
-      - env:
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              key: user
-              name: postgres-credentials
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: postgres-credentials
-        image: postgres:10.4-alpine
-        imagePullPolicy: IfNotPresent
-        name: postgres
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
+      - name: postgres
+        image: postgres:12.1-alpine
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-credentials
+                key: user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-credentials
+                key: password
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: postgres-volume-mount

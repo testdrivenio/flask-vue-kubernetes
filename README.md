@@ -33,7 +33,7 @@ Test it out at:
 
 Install and run [Minikube](https://kubernetes.io/docs/setup/minikube/):
 
-1. Install a  [Hypervisor](https://kubernetes.io/docs/tasks/tools/install-minikube/#install-a-hypervisor) (like [VirtualBox](https://www.virtualbox.org/wiki/Downloads) or [HyperKit](https://github.com/moby/hyperkit)) to manage virtual machines
+1. Install a [Hypervisor](https://kubernetes.io/docs/tasks/tools/install-minikube/#install-a-hypervisor) (like [VirtualBox](https://www.virtualbox.org/wiki/Downloads) or [HyperKit](https://github.com/moby/hyperkit)) to manage virtual machines
 1. Install and Set Up [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to deploy and manage apps on Kubernetes
 1. Install [Minikube](https://github.com/kubernetes/minikube/releases)
 
@@ -146,6 +146,7 @@ Build and push the image to Docker Hub:
 ```sh
 $ docker build -t mjhea0/vue-kubernetes ./services/client \
     -f ./services/client/Dockerfile-minikube
+
 $ docker push mjhea0/vue-kubernetes
 ```
 
