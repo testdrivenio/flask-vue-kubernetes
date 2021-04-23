@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: minikube-ingress
@@ -9,10 +9,16 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: vue
-          servicePort: 8080
+          service:
+            name: vue
+            port:
+              number: 8080
       - path: /books
+        pathType: Prefix
         backend:
-          serviceName: flask
-          servicePort: 5000
+          service:
+            name: flask
+            port:
+              number: 5000

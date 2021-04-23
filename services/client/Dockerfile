@@ -1,4 +1,4 @@
-FROM node:13.7.0-alpine
+FROM node:15-alpine
 
 RUN npm install -g http-server
 
